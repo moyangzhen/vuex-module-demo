@@ -1,37 +1,27 @@
 <template>
     <div id="app">
         <h3>{{count}}</h3>
-        名字<span>{{name}}</span>
-        <div>
-            <button @click="doMutatioin">添加</button>
-        </div>
     </div>
 </template>
 
 <script>
-import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+import {createNamespacedHelpers} from 'vuex'
+import ListModule from './store/modules/List'
+ const {mapState} = createNamespacedHelpers('List')
     export default {
         name: 'app',
         data(){
             return {
                 name:''}
         },
+        beforeCreate(){
+            this.$store.registerModule('List',ListModule)
+        },
         created(){
             console.log(this.buyTodos)
         },
         computed:{
-            ...mapState('ListModule',['count']),
-            ...mapGetters('ListModule',['getTodoById','buyTodos'])
-        },
-        methods:{
-            ...mapMutations({add:'increment'}),
-            ...mapActions('ListModule',
-                ['increment']),
-            doMutatioin(){
-               this.increment({amount:1}).then((res)=>{
-                console.log(res,'xx')
-               })
-            }
+            ...mapState(["count"])
         }
     }
 </script>
